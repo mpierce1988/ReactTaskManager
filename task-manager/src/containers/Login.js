@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useUser } from '../contexts/UserContext';
 
 export function Login(){
+    const { setUserId } = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');   
 
@@ -56,20 +58,17 @@ export function Login(){
                 body: JSON.stringify({ email, password})
             });
 
-            const data = await response.json();
-            console.log("Data: " + JSON.stringify(data));
+            const data = await response.json();            
 
-            if (data.status === 'Success') {
-                console.log("Data returned Success");
+            if (data.status === 'Success') {               
+                setUserId(data.user.id);
                 setSuccess(true);
                 setError(false);
             } else {
-                console.log("Data returned Error");
                 setError(true);
                 setSuccess(false);
             }
         } catch (error) {
-            console.log("TryCatch Error: " + error);
             setError(true);
             setSuccess(false);
         } finally {
