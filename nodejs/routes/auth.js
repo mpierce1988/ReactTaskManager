@@ -1,6 +1,13 @@
 const router = require('express').Router();
 
-let users = [];
+let users = [
+    {
+        id: 1, 
+        name: "Michael", 
+        email: "mpierce1138@gmail.com", 
+        password: "Password123!"
+    },
+];
 
 // Register a new user
 router.post('/register', (req, res) => {

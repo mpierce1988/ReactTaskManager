@@ -7,9 +7,11 @@ app.use(express.json());
 
 // import routes
 const authRoute = require('./routes/auth');
+const taskRoute = require('./routes/tasks');
 
 // Route middlewares
 app.use('/api/user', authRoute);
+app.use('/api/tasks', taskRoute);
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
