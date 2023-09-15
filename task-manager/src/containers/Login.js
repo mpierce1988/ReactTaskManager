@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 export function Login(){
     const { setUserId } = useUser();
@@ -12,6 +13,8 @@ export function Login(){
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    const navigate = useNavigate();
 
     const reset = () => {
         setEmail('');
@@ -64,6 +67,7 @@ export function Login(){
                 setUserId(data.user.id);
                 setSuccess(true);
                 setError(false);
+                navigate('/');
             } else {
                 setError(true);
                 setSuccess(false);
