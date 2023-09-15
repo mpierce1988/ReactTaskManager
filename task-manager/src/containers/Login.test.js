@@ -1,12 +1,15 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { Login } from './Login';
 import { UserProvider } from '../contexts/UserContext';
+import { BrowserRouter  } from 'react-router-dom';
 
 const renderWithUserContext = (ui) => {
     return render(
-        <UserProvider value={{ userId: 1, setUserId: () => {} }}>
-            {ui}
-        </UserProvider>
+        <BrowserRouter>
+            <UserProvider value={{ userId: 1, setUserId: () => {} }}>
+                {ui}
+            </UserProvider>
+        </BrowserRouter>
     );
 }
 
