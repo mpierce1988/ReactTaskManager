@@ -13,9 +13,9 @@ let users = [
 router.post('/register', (req, res) => {
 
     // validate name, email and password were provided
-    if (!req.body.name) return res.status(400).send('Name is required');
-    if (!req.body.email) return res.status(400).send('Email is required');
-    if (!req.body.password) return res.status(400).send('Password is required');
+    if (!req.body.name) return res.status(400).send({status: "Error", message: "Name is required"});
+    if (!req.body.email) return res.status(400).send({status: "Error", message: "Email is required"});
+    if (!req.body.password) return res.status(400).send({status: "Error", message: "Password is required"});
 
     const user = {
         id: users.length + 1,

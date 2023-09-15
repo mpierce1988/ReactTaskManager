@@ -16,6 +16,13 @@ test('password textbox is rendered', () => {
     expect(passwordTextBox).toBeInTheDocument();
 });
 
+ // test that name textbox is rendered
+ test('name textbox is rendered', () => {
+    const { getByLabelText } = render(<Register />);
+    const nameTextBox = getByLabelText(/name/i);
+    expect(nameTextBox).toBeInTheDocument();
+});
+
 // test that login button is rendered
 test('login button is rendered', () => {
     const { getByText } = render(<Register />);
@@ -50,6 +57,21 @@ test('password is required', async () => {
     
     const passwordRequired = await findByText(/password is required/i);
     expect(passwordRequired).toBeInTheDocument();    
+});
+
+ // test that name is required
+ test('name is required', async () => {
+    const { getByRole, getByLabelText, findByText } = render(<Register />);
+    const loginButton = getByRole("button", { name: /login/i });
+    const emailTextBox = getByLabelText(/email/i);
+    const passwordTextBox = getByLabelText(/password/i);
+    
+    fireEvent.change(emailTextBox, {target: { value: "Test@gmail.com"}});
+    fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
+    fireEvent.click(loginButton);    
+    
+    const nameRequired = await findByText(/name is required/i);
+    expect(nameRequired).toBeInTheDocument();    
 });
 })
 

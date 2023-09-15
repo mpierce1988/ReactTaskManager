@@ -1,55 +1,83 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { Login } from './Login';
 
 describe('Login Component', () => {
-    // test that email textbox is rendered
-test('email textbox is rendered', () => {
-    const { getByLabelText } = render(<Login />);
-    const emailTextbox = getByLabelText(/email/i);
-    expect(emailTextbox).toBeInTheDocument();
-});
+        // test that email textbox is rendered
+    test('email textbox is rendered', () => {
+        const { getByLabelText } = render(<Login />);
+        const emailTextbox = getByLabelText(/email/i);
+        expect(emailTextbox).toBeInTheDocument();
+    });
 
-// test that password textbox is rendered
-test('password textbox is rendered', () => {
-    const { getByLabelText } = render(<Login />);
-    const passwordTextBox = getByLabelText(/password/i);
-    expect(passwordTextBox).toBeInTheDocument();
-});
+    // test that password textbox is rendered
+    test('password textbox is rendered', () => {
+        const { getByLabelText } = render(<Login />);
+        const passwordTextBox = getByLabelText(/password/i);
+        expect(passwordTextBox).toBeInTheDocument();
+    });   
 
-// test that login button is rendered
-test('login button is rendered', () => {
-    const { getByText } = render(<Login />);
-    const loginButton = getByText(/login/i);
-    expect(loginButton).toBeInTheDocument();
-    expect(loginButton.tagName).toBe('BUTTON');
-});
+    // test that login button is rendered
+    test('login button is rendered', () => {
+        const { getByRole } = render(<Login />);
+        const loginButton = getByRole('button', { name: /login/i });
+        expect(loginButton).toBeInTheDocument();
+        expect(loginButton.tagName).toBe('BUTTON');
+    });
 
-// test that email is required
-test('email is required', async () => {
-    const { getByText, getByLabelText, findByText } = render(<Login />);
-    const loginButton = getByText(/login/i);
-    const passwordTextBox = getByLabelText(/password/i);
-    
-    fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
-    fireEvent.click(loginButton);
-    
-    const emailRequired = await findByText(/email is required/i);
-    
-    expect(emailRequired).toBeInTheDocument();    
-});
+    // test that email is required
+    test('email is required', async () => {
+        const { getByRole, getByLabelText, findByText } = render(<Login />);
+        const loginButton = getByRole("button", { name: /login/i });
+        const passwordTextBox = getByLabelText(/password/i);       
 
-// test that email is required
-test('password is required', async () => {
-    const { getByText, getByLabelText, findByText } = render(<Login />);
-    const loginButton = getByText(/login/i);
-    const emailTextBox = getByLabelText(/email/i);
-    
-    emailTextBox.textContent = "test@gmail.com";
-    fireEvent.click(loginButton);
-    
-    
-    const passwordRequired = await findByText(/password is required/i);
-    expect(passwordRequired).toBeInTheDocument();    
-});
+        fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });        
+        fireEvent.click(loginButton);
+        
+        const emailRequired = await findByText(/email is required/i);
+        
+        expect(emailRequired).toBeInTheDocument();    
+    });
+
+    // test that email is required
+    test('password is required', async () => {
+        const { getByRole, getByLabelText, findByText } = render(<Login />);
+        const loginButton = getByRole("button", { name: /login/i });
+        const emailTextBox = getByLabelText(/email/i);        
+        
+        fireEvent.change(emailTextBox, {target: { value: "Test@gmail.com"}});       
+        fireEvent.click(loginButton);    
+        
+        const passwordRequired = await findByText(/password is required/i);
+        expect(passwordRequired).toBeInTheDocument();    
+    });
+
+    // test that reset button clears email and password
+    test('reset button clears email and password', async () => {
+        const { getByRole, getByLabelText, findByText } = render(<Login />);        
+        const resetButton = getByRole("button", { name: /reset/i });
+        const emailTextBox = getByLabelText(/email/i);
+        const passwordTextBox = getByLabelText(/password/i);        
+
+        fireEvent.change(emailTextBox, {target: { value: "test@gmail.com"}});
+        fireEvent.change(passwordTextBox, {target: {value: "Password123!"}});
+        fireEvent.click(resetButton);
+
+        
+        expect(emailTextBox.value).toBe('');
+        expect(passwordTextBox.value).toBe('');
+
+    });
+
+    // test that reset clears error messages
+    test('reset clears error messages', async () => {
+        const { getByRole } = render(<Login />);        
+        const resetButton = getByRole("button", { name: /reset/i });        
+              
+        fireEvent.click(resetButton);
+
+        expect(screen.queryByText(/email is required/i)).toBeNull();
+        expect(screen.queryByText(/password is required/i)).toBeNull();        
+    });
+   
 })
 
