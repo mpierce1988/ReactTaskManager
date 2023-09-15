@@ -1,24 +1,33 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { Login } from './Login';
+import { UserProvider } from '../contexts/UserContext';
+
+const renderWithUserContext = (ui) => {
+    return render(
+        <UserProvider value={{ userId: 1, setUserId: () => {} }}>
+            {ui}
+        </UserProvider>
+    );
+}
 
 describe('Login Component', () => {
         // test that email textbox is rendered
     test('email textbox is rendered', () => {
-        const { getByLabelText } = render(<Login />);
+        const { getByLabelText } = renderWithUserContext(<Login />);
         const emailTextbox = getByLabelText(/email/i);
         expect(emailTextbox).toBeInTheDocument();
     });
 
     // test that password textbox is rendered
     test('password textbox is rendered', () => {
-        const { getByLabelText } = render(<Login />);
+        const { getByLabelText } = renderWithUserContext(<Login />);
         const passwordTextBox = getByLabelText(/password/i);
         expect(passwordTextBox).toBeInTheDocument();
     });   
 
     // test that login button is rendered
     test('login button is rendered', () => {
-        const { getByRole } = render(<Login />);
+        const { getByRole } = renderWithUserContext(<Login />);
         const loginButton = getByRole('button', { name: /login/i });
         expect(loginButton).toBeInTheDocument();
         expect(loginButton.tagName).toBe('BUTTON');
@@ -26,7 +35,7 @@ describe('Login Component', () => {
 
     // test that email is required
     test('email is required', async () => {
-        const { getByRole, getByLabelText, findByText } = render(<Login />);
+        const { getByRole, getByLabelText, findByText } = renderWithUserContext(<Login />);
         const loginButton = getByRole("button", { name: /login/i });
         const passwordTextBox = getByLabelText(/password/i);       
 
@@ -40,7 +49,7 @@ describe('Login Component', () => {
 
     // test that email is required
     test('password is required', async () => {
-        const { getByRole, getByLabelText, findByText } = render(<Login />);
+        const { getByRole, getByLabelText, findByText } = renderWithUserContext(<Login />);
         const loginButton = getByRole("button", { name: /login/i });
         const emailTextBox = getByLabelText(/email/i);        
         
@@ -53,7 +62,7 @@ describe('Login Component', () => {
 
     // test that reset button clears email and password
     test('reset button clears email and password', async () => {
-        const { getByRole, getByLabelText, findByText } = render(<Login />);        
+        const { getByRole, getByLabelText, findByText } = renderWithUserContext(<Login />);        
         const resetButton = getByRole("button", { name: /reset/i });
         const emailTextBox = getByLabelText(/email/i);
         const passwordTextBox = getByLabelText(/password/i);        
@@ -70,7 +79,7 @@ describe('Login Component', () => {
 
     // test that reset clears error messages
     test('reset clears error messages', async () => {
-        const { getByRole } = render(<Login />);        
+        const { getByRole } = renderWithUserContext(<Login />);        
         const resetButton = getByRole("button", { name: /reset/i });        
               
         fireEvent.click(resetButton);
