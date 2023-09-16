@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
-let tasks = [];
+let tasks = [
+    { id: 1, userId: 1, name: 'Task 1', description: 'Task 1 description' },
+];
 
 // Get all tasks for a given user
 router.get('/:userId', (req, res) => {
@@ -16,15 +18,15 @@ router.get('/:userId', (req, res) => {
 
 // Add a new task
 // A new task requires a userId, task name, and description
-router.post('/', (req, res) => {
+router.post('/:userId', (req, res) => {
     // validate a user id was provided
-    if (!req.body.userId) return res.status(400).send({status: "Error", message: "User id is required"});
+    if (!req.params.userId) return res.status(400).send({status: "Error", message: "User id is required"});
     if (!req.body.name) return res.status(400).send({status: "Error", message: "Task name is required"});
     if (!req.body.description) return res.status(400).send({status: "Error", message: "Task description is required"});
 
     const task = {
         id: tasks.length + 1,
-        userId: req.body.userId,
+        userId: parseInt(req.params.userId),
         name: req.body.name,
         description: req.body.description
     };
@@ -35,12 +37,13 @@ router.post('/', (req, res) => {
 
 // Update a task
 // A task can be updated by providing the task id, and any of the following: name, description
-router.patch('/:taskId', (req, res) => {
+router.patch('/:userId/:taskId', (req, res) => {
     // validate a task id was provided
     if (!req.params.taskId) return res.status(400).send({status: "Error", message: "Task id is required"});
+    if(!req.params.userId) return res.status(400).send({status: "Error", message: "User id is required"});
 
     // find the task
-    const task = tasks.find(task => task.id === parseInt(req.params.taskId));
+    const task = tasks.find(task => task.id === parseInt(req.params.taskId) && task.userId === parseInt(req.params.userId));
     if (!task) return res.status(400).send({status: "Error", message: "Task not found"});
 
     // update the task
@@ -55,12 +58,13 @@ router.patch('/:taskId', (req, res) => {
 });
 
 // Delete a task
-router.delete('/:taskId', (req, res) => {
+router.delete('/:userId/:taskId', (req, res) => {
     // validate a task id has been provided
     if(!req.params.taskId) return res.status(400).send({status: "Error", message: "Task id is required"});
+    if(!req.params.userId) return res.status(400).send({status: "Error", message: "User id is required"});
 
 
-    const taskToDelete = tasks.find(t => t.id === parseInt(req.params.taskId));
+    const taskToDelete = tasks.find(t => t.id === parseInt(req.params.taskId) && t.userId === parseInt(req.params.userId));
 
     // validate a task was found for this taskId
     if(!taskToDelete) return res.status(400).send({status: "Error", message: "Task not found"});
