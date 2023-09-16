@@ -2,6 +2,10 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import { Login } from './Login';
 import { UserProvider } from '../contexts/UserContext';
 import { BrowserRouter  } from 'react-router-dom';
+import * as apiFunctions from '../functions/apiFunctions';
+
+// Mock the apiFunctions.login function
+apiFunctions.login = jest.fn();
 
 const renderWithUserContext = (ui) => {
     return render(
@@ -90,6 +94,40 @@ describe('Login Component', () => {
         expect(screen.queryByText(/email is required/i)).toBeNull();
         expect(screen.queryByText(/password is required/i)).toBeNull();        
     });
-   
+
+    // Test that valid login displays success message
+    test('valid login displays success message', async () => {
+        apiFunctions.login.mockResolvedValueOnce({status: "Success", user: { id: 1, email: 'test@getDefaultNormalizer.com', name: "Anon", password: "*****"} });
+
+        const { getByRole, getByLabelText, findByText } = renderWithUserContext(<Login />);
+        const loginButton = getByRole("button", { name: /login/i });
+        const emailTextBox = getByLabelText(/email/i);
+        const passwordTextBox = getByLabelText(/password/i);
+
+        fireEvent.change(emailTextBox, { target: { value: 'test@gmail.com'}});
+        fireEvent.change(passwordTextBox, { target: { value: 'Password123!'} });
+        fireEvent.click(loginButton);
+
+        const successMessage = await findByText(/login successful!/i);
+        expect(successMessage).toBeInTheDocument();
+    });
+
+    // Test that invalid login displays error message
+   // Test that valid login displays success message
+   test('invalid valid login displays error message', async () => {
+    apiFunctions.login.mockResolvedValueOnce({status: "Error"});
+
+    const { getByRole, getByLabelText, findByText } = renderWithUserContext(<Login />);
+    const loginButton = getByRole("button", { name: /login/i });
+    const emailTextBox = getByLabelText(/email/i);
+    const passwordTextBox = getByLabelText(/password/i);
+
+    fireEvent.change(emailTextBox, { target: { value: 'test@gmail.com'}});
+    fireEvent.change(passwordTextBox, { target: { value: 'Password123!'} });
+    fireEvent.click(loginButton);
+
+    const errorMessage = await findByText(/there was an error logging in/i);
+    expect(errorMessage).toBeInTheDocument();
+});
 })
 
