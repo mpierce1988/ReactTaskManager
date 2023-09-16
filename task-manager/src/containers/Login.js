@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useUser } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../functions/apiFunctions';
 
 export function Login(){
     const { setUserId } = useUser();
@@ -50,18 +51,9 @@ export function Login(){
             
             if(emailError || passwordError) {
                 throw new Error('Invalid email or password');
-            }
-
-            // make an API request
-            const response = await fetch('http://localhost:4000/api/user/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password})
-            });
-
-            const data = await response.json();            
+            }            
+                      
+            const data = await login(email, password);
 
             if (data.status === 'Success') {               
                 setUserId(data.user.id);
