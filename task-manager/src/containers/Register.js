@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { register } from '../functions/apiFunctions';
 
 export function Register() {
     const [email, setEmail] = useState('');
@@ -73,17 +74,8 @@ export function Register() {
             return;
         }
 
-        try {
-            // make an API request
-            const response = await fetch('http://localhost:4000/api/user/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, name, password})
-            });
-
-            const data = await response.json();
+        try {  
+            const data = await register(email, name, password);
 
             if (data.status === 'Success') {
                 setSuccess(true);
@@ -98,8 +90,6 @@ export function Register() {
         } finally {
             setLoading(false);
         }
-
-
     }
 
     return (
