@@ -30,21 +30,21 @@ describe('Register Component', () => {
     // test that login button is rendered
     test('register button is rendered', () => {
         const { getByRole } = render(<Register />);
-        const loginButton = getByRole('button', { name: /register/i});
-        expect(loginButton).toBeInTheDocument();
-        expect(loginButton.tagName).toBe('BUTTON');
+        const registerButton = getByRole('button', { name: /register/i});
+        expect(registerButton).toBeInTheDocument();
+        expect(registerButton.tagName).toBe('BUTTON');
     });
 
     // test that email is required
     test('email is required', async () => {
         const { getByRole, getByLabelText, findByText, queryByText } = render(<Register />);
-        const loginButton = getByRole('button', { name: /register/i });
+        const registerButton = getByRole('button', { name: /register/i });
         const passwordTextBox = getByLabelText(/^password$/i);
         const nameTextBox = getByLabelText(/name/i);
         
         fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
         fireEvent.change(nameTextBox, { target: { value: 'Michael' } });
-        fireEvent.click(loginButton);        
+        fireEvent.click(registerButton);        
        
         expect(await findByText(/email is required/i)).toBeInTheDocument();
         //test password and name error messages are NOT displayed
@@ -55,13 +55,13 @@ describe('Register Component', () => {
     // test that email is required
     test('password is required', async () => {
         const { getByRole, getByLabelText, findByText, queryByText } = render(<Register />);
-        const loginButton = getByRole('button', { name: /register/i });
+        const registerButton = getByRole('button', { name: /register/i });
         const emailTextBox = getByLabelText(/email/i);
         const nameTextBox = getByLabelText(/name/i);
         
         fireEvent.change(emailTextBox, { target: { value: 'test@gmail.com'}});
         fireEvent.change(nameTextBox, { target: { value: 'Michael'}});        
-        fireEvent.click(loginButton);
+        fireEvent.click(registerButton);
 
         expect(await findByText(/password is required/i)).toBeInTheDocument();
         //test email and name error messages are NOT displayed
@@ -72,13 +72,13 @@ describe('Register Component', () => {
     // test that name is required
     test('name is required', async () => {
         const { getByRole, getByLabelText, findByText, queryByText } = render(<Register />);
-        const loginButton = getByRole("button", { name: /register/i });
+        const registerButton = getByRole("button", { name: /register/i });
         const emailTextBox = getByLabelText(/email/i);
         const passwordTextBox = getByLabelText(/^password$/i);
         
         fireEvent.change(emailTextBox, {target: { value: "Test@gmail.com"}});
         fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
-        fireEvent.click(loginButton);    
+        fireEvent.click(registerButton);    
         
         
         expect(await findByText(/name is required/i)).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('Register Component', () => {
         apiFunctions.register.mockResolvedValueOnce({status: "Success"});
 
         const { getByRole, getByLabelText, findByText, queryByText } = render(<Register />);
-        const loginButton = getByRole("button", { name: /register/i });
+        const registerButton = getByRole("button", { name: /register/i });
         const emailTextBox = getByLabelText(/email/i);
         const nameTextBox = getByLabelText(/name/i);
         const passwordTextBox = getByLabelText(/^password$/i);
@@ -102,7 +102,7 @@ describe('Register Component', () => {
         fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
         fireEvent.change(confirmPasswordTextBox, { target: { value: 'Password123!' } });
         fireEvent.change(nameTextBox, { target: { value: 'Anon'}});
-        fireEvent.click(loginButton);    
+        fireEvent.click(registerButton);    
         
         
         const successMessage = await findByText(/registration successful/i);
@@ -114,7 +114,7 @@ describe('Register Component', () => {
         apiFunctions.register.mockResolvedValueOnce({status: "Error"});
 
         const { getByRole, getByLabelText, findByText, queryByText } = render(<Register />);
-        const loginButton = getByRole("button", { name: /register/i });
+        const registerButton = getByRole("button", { name: /register/i });
         const emailTextBox = getByLabelText(/email/i);
         const nameTextBox = getByLabelText(/name/i);
         const passwordTextBox = getByLabelText(/^password$/i);
@@ -122,7 +122,7 @@ describe('Register Component', () => {
         fireEvent.change(emailTextBox, {target: { value: "Test@gmail.com"}});
         fireEvent.change(passwordTextBox, { target: { value: 'Password123!' } });
         fireEvent.change(nameTextBox, { target: { value: 'Anon'}});
-        fireEvent.click(loginButton);    
+        fireEvent.click(registerButton);    
         
         
         const errorMessage = await findByText(/the following error has occured/i);
