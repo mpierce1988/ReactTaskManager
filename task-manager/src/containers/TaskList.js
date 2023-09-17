@@ -39,8 +39,11 @@ export function TaskList() {
             {loading && <p>Loading...</p>}
             {error && <p>{error}</p>}
             {tasks.length == 0 && <p>No tasks found</p>}
+            {userId && <button role='button' name='create'>Create Task</button>}
             {tasks.length > 0 && 
-                tasks.map(t => <TaskItem id={t.id} name={t.name} description={t.description} />)
+                <ul>
+                    {tasks.map(t => <li key={t.id}><TaskItem key={t.id} name={t.name} description={t.description} /></li>)}
+                </ul> 
             }
         </>
     );

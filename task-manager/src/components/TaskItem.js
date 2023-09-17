@@ -1,6 +1,6 @@
 
 
-export function TaskItem({id, name, description}) {
+export function TaskItem({ name, description}) {
     return (
         <>
             <h2>{name}</h2>
