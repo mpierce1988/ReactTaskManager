@@ -1,22 +1,30 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { TaskList } from './TaskList';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from '../contexts/UserContext';
+import { useUser } from '../contexts/UserContext';
 import * as apiFunctions from '../functions/apiFunctions';
 
+// Mock the getTasks function
 apiFunctions.getTasks = jest.fn();
 
-const renderWithUserContext = (userId, ui) => {
+jest.mock('../contexts/UserContext', () => ({
+    useUser: jest.fn()
+}));
+
+const renderWithUserContext = (ui) => {
     return render(
         <BrowserRouter>
-            <UserProvider value={{ userId, setUserId: () => {} }}>
-                {ui}
-            </UserProvider>
+            {ui}
         </BrowserRouter>
     );
 }
 
 describe('TaskList Component', () => {
+    // reset all useUser mocks before each test
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     // Test that all tasks are rendered
     test('all tasks are rendered', async () => {
         const tasks = [
@@ -26,8 +34,11 @@ describe('TaskList Component', () => {
         ];
 
         apiFunctions.getTasks.mockResolvedValueOnce({status: "Success", tasks: tasks});
+        useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
 
-        renderWithUserContext(1, <TaskList />);
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
 
         for(let task of tasks) {
             const taskNameElement = await screen.findByText(task.name);
@@ -40,8 +51,11 @@ describe('TaskList Component', () => {
         const tasks = [];
 
         apiFunctions.getTasks.mockResolvedValueOnce({status: "Success", tasks: tasks});
+        useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
 
-        renderWithUserContext(1, <TaskList />);
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
 
         const noTasksMessage = await screen.getByText(/no tasks found/i);
 
@@ -53,10 +67,13 @@ describe('TaskList Component', () => {
         const tasks = [];
 
         apiFunctions.getTasks.mockResolvedValueOnce({status: "Success", tasks: tasks});
+        useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
 
-        renderWithUserContext(1, <TaskList />);
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
 
-        const createTaskButton = await screen.getByRole('button', { name: /create/i });
+        const createTaskButton = await screen.findByRole('button', { name: /create/i });
 
         expect(createTaskButton).toBeInTheDocument();
     });
@@ -64,8 +81,11 @@ describe('TaskList Component', () => {
     // Test that error message is displayed if user is not logged in
     test('error message is displayed if user is not logged in', async () => {
         apiFunctions.getTasks.mockResolvedValueOnce({status: "Error", message: "User not logged in"});
+        useUser.mockReturnValue({userId: null, setUserId: jest.fn()});
 
-        renderWithUserContext(null, <TaskList />);
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
 
         const errorMessage = await screen.getByText(/not logged in/i);
 
