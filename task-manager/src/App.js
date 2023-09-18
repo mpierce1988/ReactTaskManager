@@ -7,6 +7,7 @@ import { TaskList } from './containers/TaskList';
 import { About } from './containers/About';
 import { Routes, Route } from 'react-router-dom';
 import { UserProvider } from './contexts/UserContext';
+import { CreateTask } from './containers/CreateTask';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/tasks" element={<TaskList />} />
+            <Route path="/tasks/create" element={<CreateTask />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </UserProvider>
