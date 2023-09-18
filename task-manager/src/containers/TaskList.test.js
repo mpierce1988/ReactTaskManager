@@ -91,4 +91,40 @@ describe('TaskList Component', () => {
 
         expect(errorMessage).toBeInTheDocument();
     });
+
+    // Test that loading message disappears after loading is complete
+    test('loading message disappears after loading tasks', async () => {
+        const tasks = [
+            { id: 1, name: 'Task A', description: 'Description 1' },
+            { id: 2, name: 'Task 2', description: 'Description 2' },
+            { id: 3, name: 'Task 3', description: 'Description 3' }
+        ];
+
+        apiFunctions.getTasks.mockResolvedValueOnce({status: "Success", tasks: tasks});
+        useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
+
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
+
+        const loadingMessage = await screen.queryByText(/loading/i);
+
+        expect(loadingMessage).not.toBeInTheDocument();
+    });
+
+    // Test that loading message disappears after  no tasks returned
+    test('loading message disappears after no tasks returned', async () => {
+        const tasks = [];
+
+        apiFunctions.getTasks.mockResolvedValueOnce({status: "Success", message: tasks});
+        useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
+
+        await act(async () => {
+            renderWithUserContext(<TaskList />);
+        });
+
+        const loadingMessage = await screen.queryByText(/loading/i);
+
+        expect(loadingMessage).not.toBeInTheDocument();
+    });
 });
