@@ -30,7 +30,7 @@ export const register = async (email, name, password ) => {
 
 export const getTask = async (userId, taskId) => {
     // Make API request
-    const response = await fetch('http://localhost:4000/api/' + userId + '/' + taskId, {
+    const response = await fetch('http://localhost:4000/api/tasks/' + userId + '/' + taskId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -44,11 +44,26 @@ export const getTask = async (userId, taskId) => {
 
 export const getTasks = async (userId) => {
     // Make API request
-    const response = await fetch('http://localhost:4000/api/' + userId, {
+    const response = await fetch('http://localhost:4000/api/tasks/' + userId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         }
+    });
+
+    const data = await response.json();
+
+    return data;
+}
+
+export const createTask = async (userId, name, description) => {
+    // Make API request
+    const response = await fetch('http://localhost:4000/api/tasks/' + userId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, description })
     });
 
     const data = await response.json();
