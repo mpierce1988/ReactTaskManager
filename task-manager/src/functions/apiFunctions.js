@@ -74,7 +74,7 @@ export const createTask = async (userId, name, description) => {
 export const updateTask = async (userId, taskId, name, description) => {
     // Make API request
     const response = await fetch('http://localhost:4000/api/tasks/' + userId + '/' + taskId, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
