@@ -37,7 +37,7 @@ export function TaskList() {
 
         fetchData();
 
-    }, []);
+    }, [userId]);
 
     return (
         <>
