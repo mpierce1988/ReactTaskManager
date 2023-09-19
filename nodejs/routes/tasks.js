@@ -16,6 +16,20 @@ router.get('/:userId', (req, res) => {
     res.status(200).send({status: "Success", tasks: userTasks});
 });
 
+// get one task from a user
+router.get('/:userId/:taskId', (req, res) => {
+    // validate a task id was provided
+    if (!req.params.taskId) return res.status(400).send({status: "Error", message: "Task id is required"});
+    // Validate a user ID was provided
+    if (!req.params.userId) return res.status(400).send({status: "Error", message: "User id is required"});
+
+    // find the task
+    const task = tasks.find(task => task.id === parseInt(req.params.taskId) && task.userId === parseInt(req.params.userId));
+    if (!task) return res.status(400).send({status: "Error", message: "Task not found"});
+
+    res.status(200).send({status: "Success", task: task});
+});
+
 // Add a new task
 // A new task requires a userId, task name, and description
 router.post('/:userId', (req, res) => {
