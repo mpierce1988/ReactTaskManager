@@ -15,7 +15,7 @@ jest.mock('../contexts/UserContext.js', () => ({
 // set useUser mock before each test
 beforeEach(() => {
     useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
-    apiFunctions.getTask.mockReturnValue({status: "Success", task: {id: 1, userId: 1, name: "Task 1", description: "Description 1"}});
+    apiFunctions.getTask.mockResolvedValue({status: "Success", task: {id: 1, userId: 1, name: "Task 1", description: "Description 1"}});
 });
 
 describe('UpdateTask Component', () => {
@@ -99,7 +99,7 @@ describe('UpdateTask Component', () => {
             fireEvent.click(updateTaskButton);
         });
 
-        const descriptionRequired = await screen.queryByText(/description required/i);
+        const descriptionRequired = await screen.queryByText(/description is required/i);
         expect(descriptionRequired).toBeInTheDocument();
     });
 
@@ -146,6 +146,19 @@ describe('UpdateTask Component', () => {
         });
 
         const errorMessage = await screen.queryByText(/error updating task/i);
+        expect(errorMessage).toBeInTheDocument();
+    });
+
+    // test that unsuccessful retrieval of task displays an error message
+    test('unsuccessful retrieval of task displays error message', async () => {
+        // mock an unsuccessful getTask function
+        apiFunctions.getTask.mockResolvedValueOnce({status: "Error", message: "Error retrieving task"});
+
+        await act(async () => {
+            render(<UpdateTask />);
+        });
+
+        const errorMessage = await screen.queryByText(/error retrieving task/i);
         expect(errorMessage).toBeInTheDocument();
     });
 
