@@ -78,16 +78,18 @@ export function CreateTask() {
             {error && <p>Error creating task</p>}
             {success && <p>Task created successfully!</p>}
             {!userId && <p>User not logged in</p>}
-            <form onSubmit={submit}>
-                <label htmlFor="name">Name</label>
-                <input id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
-                {nameError && <p>{nameError}</p>}
-                <label htmlFor="description">Description</label>
-                <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}/>
-                {descriptionError && <p>{descriptionError}</p>}
-                <button type="submit">Create</button>
-                <button type="button" role='button' onClick={reset}>Reset</button>
-            </form>
+            {userId && 
+                <form onSubmit={submit}>
+                    <label htmlFor="name">Name</label>
+                    <input id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
+                    {nameError && <p>{nameError}</p>}
+                    <label htmlFor="description">Description</label>
+                    <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}/>
+                    {descriptionError && <p>{descriptionError}</p>}
+                    <button type="submit">Create</button>
+                    <button type="button" role='button' onClick={reset}>Reset</button>
+                </form>
+            }
         </>
     );
 }
