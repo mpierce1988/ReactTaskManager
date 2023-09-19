@@ -70,3 +70,18 @@ export const createTask = async (userId, name, description) => {
 
     return data;
 }
+
+export const updateTask = async (userId, taskId, name, description) => {
+    // Make API request
+    const response = await fetch('http://localhost:4000/api/tasks/' + userId + '/' + taskId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, description })
+    });
+
+    const data = await response.json();
+
+    return data;
+}
