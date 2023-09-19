@@ -51,7 +51,10 @@ export function CreateTask() {
         }
 
         // if there are errors, exit
-        if(errorCount > 0) return;
+        if(errorCount > 0) {
+            setLoading(false);
+            return;
+        };
 
         // perform createTask apiFunction inside a try catch
         try {
