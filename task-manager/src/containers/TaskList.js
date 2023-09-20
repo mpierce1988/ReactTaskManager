@@ -49,7 +49,7 @@ export function TaskList() {
             {userId && <Link to="/tasks/create" role="button">Create Task</Link>}
             {tasks && tasks.length > 0 && 
                 <ul>
-                    {tasks.map(t => <li key={t.id}><TaskItem userId = {userId} taskId={t.id} name={t.name} description={t.description} /></li>)}
+                    {tasks.map(t => <li key={t.id}><TaskItem taskId={t.id} name={t.name} description={t.description} /></li>)}
                 </ul> 
             }
         </>
