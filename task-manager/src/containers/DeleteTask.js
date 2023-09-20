@@ -40,6 +40,8 @@ export function DeleteTask(){
                 setLoading(false);
             }
         }
+
+        fetchData();
     }, [userId]);
 
     // submit form
