@@ -85,3 +85,17 @@ export const updateTask = async (userId, taskId, name, description) => {
 
     return data;
 }
+
+export const deleteTask = async (userId, taskId) => {
+    // Make API request
+    const response = await fetch('http://localhost:4000/api/tasks/' + userId + '/' + taskId, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await response.json();
+
+    return data;
+}
