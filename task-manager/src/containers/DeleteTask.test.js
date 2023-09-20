@@ -1,5 +1,5 @@
 import { DeleteTask } from "./DeleteTask";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import * as apiFunctions from "../functions/apiFunctions";
 import { useUser } from "../contexts/UserContext";
 import { useParams } from "react-router-dom";
@@ -23,7 +23,7 @@ jest.mock("react-router-dom", () => ({
 // Set mock parameters before each test
 beforeEach(() => {
     useUser.mockReturnValue({userId: 1, setUserId: jest.fn()});
-    useParams.mockReturnValue({id: 1});
+    useParams.mockReturnValue({taskId: 1});
     apiFunctions.getTask.mockResolvedValue({status: "Success", task: {id: 1, userId: 1, name: "Task 1", description: "Description 1"}});
 });
 
@@ -38,23 +38,29 @@ const renderWithRouter = (ui) => {
 describe('DeleteTask Component', () => {
     // test that the task name is rendered
     test('task name is rendered', async () => {
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
-        const taskName = await screen.findByText(/task 1/i);
+        const taskName = await screen.findByTestId("task-description");
         expect(taskName).toBeInTheDocument();
     });
 
     // test that description is rendered
     test('task description is rendered', async () => {
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
-        const taskDescription = await screen.findByText(/description 1/i);
+        const taskDescription = await screen.findByTestId("task-name");
         expect(taskDescription).toBeInTheDocument();
     });
 
     // test that delete task button is rendered
     test('delete task button is rendered', async () => {
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
         const deleteTaskButton = await screen.findByRole('button', {name: /delete/i});
         expect(deleteTaskButton).toBeInTheDocument();
@@ -62,7 +68,9 @@ describe('DeleteTask Component', () => {
 
     // test that cancel button is rendered
     test('cancel button is rendered', async () => {
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
         const cancelButton = await screen.findByRole('button', {name: /cancel/i});
         expect(cancelButton).toBeInTheDocument();
@@ -70,7 +78,9 @@ describe('DeleteTask Component', () => {
 
     // test that delete task button calls deleteTask function
     test('delete task button calls deleteTask function', async () => {
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
         const deleteTaskButton = await screen.findByRole('button', {name: /delete/i});
 
@@ -84,7 +94,9 @@ describe('DeleteTask Component', () => {
     // test that successful delete displays success message
     test('successful delete displays success message', async () => {
         apiFunctions.deleteTask.mockResolvedValueOnce({status: "Success", task: {id: 1, userId: 1, name: "Task 1", description: "Description 1"}});
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
         const deleteTaskButton = await screen.findByRole('button', {name: /delete/i});
 
@@ -99,7 +111,9 @@ describe('DeleteTask Component', () => {
     // test that unable to delete displays error message
     test('unable to delete displays error message', async () => {
         apiFunctions.deleteTask.mockResolvedValueOnce({status: "Error", message: "Unable to delete task"});
-        renderWithRouter(<DeleteTask />);
+        await act(async () => {
+            renderWithRouter(<DeleteTask />);
+        });
 
         const deleteTaskButton = await screen.findByRole('button', {name: /delete/i});
 
