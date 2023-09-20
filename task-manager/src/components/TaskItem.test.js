@@ -1,5 +1,14 @@
 import { TaskItem } from './TaskItem';
 import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+
+const renderWithRouter = (ui) => {
+    return render(
+        <BrowserRouter>
+            {ui}
+        </BrowserRouter>
+    );
+}
 
 describe('TaskItem Component', () => {
     // Test that the task name is rendered
@@ -7,7 +16,7 @@ describe('TaskItem Component', () => {
         const taskName = 'Task 1';
         const taskDescription = "Description 1";        
 
-        const { findByText } = render(<TaskItem name={taskName} description={taskDescription} id={1}/>);
+        const { findByText } = renderWithRouter(<TaskItem name={taskName} description={taskDescription} taskId={1}/>);
 
         const taskNameElement = await findByText(taskName);
         expect(taskNameElement).toBeInTheDocument();
@@ -18,7 +27,7 @@ describe('TaskItem Component', () => {
         const taskName = 'Task 1';
         const taskDescription = 'Description 1';
 
-        const { findByText } = render(<TaskItem name={taskName} description={taskDescription} id={1} />);
+        const { findByText } = renderWithRouter(<TaskItem name={taskName} description={taskDescription} taskId={1} />);
 
         const taskDescriptionElement = await findByText(taskDescription);
 
@@ -31,7 +40,7 @@ describe('TaskItem Component', () => {
         const taskDescription = 'Description 1';
         
 
-        const { findByRole } = render(<TaskItem name={taskName} description={taskDescription} id={1} />);
+        const { findByRole } = renderWithRouter(<TaskItem name={taskName} description={taskDescription} taskId={1} />);
 
         const editTaskButton = await findByRole('button', { name: /edit/i});
 
@@ -43,7 +52,7 @@ describe('TaskItem Component', () => {
         const taskName = 'Task 1';
         const taskDescription = 'Description 1';        
 
-        const { findByRole } = render(<TaskItem name={taskName} description={taskDescription} id={1} />);
+        const { findByRole } = renderWithRouter(<TaskItem name={taskName} description={taskDescription} taskId={1} />);
 
         const deleteTaskButton = await findByRole('button', { name: /delete/i});
 
