@@ -7,12 +7,16 @@ export function TaskItem({ taskId, name, description}) {
         navigate('/tasks/' + taskId);
     }
 
+    const goToDeleteTask = () => {
+        navigate('/tasks/' + taskId + '/delete');
+    }
+
     return (
         <>
             <h2>{name}</h2>
             <p>{description}</p>
             <button role='button' aria-label='edit' name='edit' onClick={goToUpdateTask}>Edit</button>
-            <button role='button' aria-label='delete' name='delete'>Delete</button>
+            <button role='button' aria-label='delete' name='delete' onClick={goToDeleteTask}>Delete</button>
         </>
     );
 }
