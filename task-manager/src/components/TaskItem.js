@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export function TaskItem({ userId, taskId, name, description,}) {
+export function TaskItem({ taskId, name, description}) {
     const navigate = useNavigate();
 
     const goToUpdateTask = () => {
