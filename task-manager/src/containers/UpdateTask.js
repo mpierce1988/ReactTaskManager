@@ -31,7 +31,7 @@ export function UpdateTask() {
     // Retrieve task from api
     useEffect(() => {
         // validate a userId is present
-        if(!userId || userId == '') {
+        if(!userId || userId === '') {
             setError('User not logged in');
             return;
         }
