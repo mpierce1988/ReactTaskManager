@@ -43,33 +43,33 @@ export function Register() {
         setNameError('');
         setConfirmPasswordError('');
 
-        const errors = [];
+        let errorCount = 0;
 
 
         // validate required fields
         if (!email || email === '') {
             setEmailError('Email is required');
-            errors.push('Email is required');
+            errorCount++;
         }
 
         if (!name || name === '') {
             setNameError('Name is required');
-            errors.push('Name is required');
+            errorCount++;
         }
 
         if(!password || password === ''){
             setPasswordError('Password is required');
-            errors.push('Password is required');
+            errorCount++;
         }
 
         // validate password and confirmPassword match
         if(password !== confirmPassword){
             setConfirmPasswordError('Passwords do not match');
-            errors.push('Passwords do not match');
+            errorCount++;
         }
 
         // Validate all fields are valid. If not, show general error message
-        if (errors.length > 0) {
+        if (errorCount > 0) {
             setError('Some fields are missing or incomplete');
             setLoading(false);
             return;
