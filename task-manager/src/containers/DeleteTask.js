@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getTask, deleteTask } from "../functions/apiFunctions";
 import { useUser } from "../contexts/UserContext";
-import { Alert, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export function DeleteTask(){
@@ -47,7 +47,7 @@ export function DeleteTask(){
         }
 
         fetchData();
-    }, [userId]);
+    }, [userId, taskId]);
 
     // submit form
     const submit = async (e) => {
