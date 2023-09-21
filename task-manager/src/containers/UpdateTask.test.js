@@ -2,6 +2,7 @@ import { UpdateTask } from './UpdateTask';
 import { render, fireEvent, screen, act } from '@testing-library/react';
 import * as apiFunctions from '../functions/apiFunctions';
 import { useUser } from '../contexts/UserContext';
+import { BrowserRouter } from 'react-router-dom';
 
 // mock the getTask and updateTask function
 apiFunctions.updateTask = jest.fn();
@@ -22,7 +23,7 @@ describe('UpdateTask Component', () => {
     // test that name textbox is rendered
     test('name textbox is rendered', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const nameTextBox = screen.getByLabelText(/name/i);
@@ -32,7 +33,7 @@ describe('UpdateTask Component', () => {
     // test that description textbox is rendered
     test('description textbox is rendered', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const descriptionTextBox = screen.getByLabelText(/description/i);
@@ -41,7 +42,7 @@ describe('UpdateTask Component', () => {
 
     // test that update task button is rendered
     test('update task button is rendered', () => {
-        render(<UpdateTask />);
+        render(<BrowserRouter><UpdateTask /></BrowserRouter>);
 
         const updateTaskButton = screen.getByRole('button', {name : /update/i});
         expect(updateTaskButton).toBeInTheDocument();
@@ -50,7 +51,7 @@ describe('UpdateTask Component', () => {
     // test that initial name value from getTask is displayed in the name textbox
     test('initial name from getTask is displayed in textbox', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const nameTextBox = screen.getByLabelText(/name/i);
@@ -60,7 +61,7 @@ describe('UpdateTask Component', () => {
     // test that initial description value from getTask is displayed in description textbox
     test('initial description from getTask is displayed in textbox', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const descriptionTextBox = screen.getByLabelText(/description/i);
@@ -70,7 +71,7 @@ describe('UpdateTask Component', () => {
     // test that name is required
     test('name is required displays error message', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const updateTaskButton = screen.getByRole('button', {name : /update/i});
@@ -88,7 +89,7 @@ describe('UpdateTask Component', () => {
     // test that description is required
     test('description is required displays error message', async () => {
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const updateTaskButton = screen.getByRole('button', { name: /update/i});
@@ -109,7 +110,7 @@ describe('UpdateTask Component', () => {
         apiFunctions.updateTask.mockResolvedValueOnce({status: "Success", task: {id: 1, userId: 1, name: "Updated Task 1", description: "Updated Description 1"}});
 
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const updateTaskButton = screen.getByRole('button', { name: /update/i});
@@ -132,7 +133,7 @@ describe('UpdateTask Component', () => {
         apiFunctions.updateTask.mockResolvedValueOnce({status: "Error", message: "Error updating task"});
 
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const updateTaskButton = screen.getByRole('button', { name: /update/i});
@@ -155,7 +156,7 @@ describe('UpdateTask Component', () => {
         apiFunctions.getTask.mockResolvedValueOnce({status: "Error", message: "Error retrieving task"});
 
         await act(async () => {
-            render(<UpdateTask />);
+            render(<BrowserRouter><UpdateTask /></BrowserRouter>);
         });
 
         const errorMessage = await screen.queryByText(/error retrieving task/i);
