@@ -3,6 +3,8 @@ import { TaskItem } from "../components/TaskItem";
 import { getTasks } from "../functions/apiFunctions";
 import { useUser } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
+import { Alert, Nav, Table, Button } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
 export function TaskList() {
     const {userId} = useUser();
@@ -41,16 +43,33 @@ export function TaskList() {
 
     return (
         <>
-            <h1>Task List</h1>
-            {!userId && <p>User not logged in</p>}
+            <h1 className="display-1">Task List</h1>
+            {!userId && <Alert variant="danger">User not logged in</Alert>}
             {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {tasks && tasks.length == 0 && <p>No tasks found</p>}
-            {userId && <Link to="/tasks/create" role="button">Create Task</Link>}
+            {error && <Alert variant="warning">{error}</Alert>}
+            {tasks && tasks.length == 0 && <Alert variant="warning">No tasks found</Alert>}
+            {userId &&
+                <LinkContainer to="/tasks/create" className="mt-3 mb-3"> 
+                    <Button variant='success' role="button">Create Task</Button>
+                </LinkContainer>
+            }
             {tasks && tasks.length > 0 && 
-                <ul>
-                    {tasks.map(t => <li key={t.id}><TaskItem taskId={t.id} name={t.name} description={t.description} /></li>)}
-                </ul> 
+                <div>
+                    <p>Number of Tasks: {tasks.length}</p>
+                    <Table>
+                        <thead>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            {tasks.map(t => <tr key={t.id}>
+                                <TaskItem taskId={t.id} name={t.name} description={t.description} />
+                            </tr>)}
+                        </tbody>
+                    
+                    </Table>
+                </div> 
             }
         </>
     );

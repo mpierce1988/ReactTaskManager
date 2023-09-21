@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+
 
 export function TaskItem({ taskId, name, description}) {
     const navigate = useNavigate();
@@ -13,10 +15,12 @@ export function TaskItem({ taskId, name, description}) {
 
     return (
         <>
-            <h2>{name}</h2>
-            <p>{description}</p>
-            <button role='button' aria-label='edit' name='edit' onClick={goToUpdateTask}>Edit</button>
-            <button role='button' aria-label='delete' name='delete' onClick={goToDeleteTask}>Delete</button>
+            <td>{name}</td>
+            <td>{description}</td>
+            <td>
+                <Button variant='info' role='button' aria-label='edit' name='edit' onClick={goToUpdateTask}>Edit</Button>
+                <Button variant='danger' role='button' aria-label='delete' name='delete' onClick={goToDeleteTask}>Delete</Button>
+            </td>            
         </>
     );
 }
