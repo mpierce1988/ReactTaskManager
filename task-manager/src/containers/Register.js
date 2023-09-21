@@ -96,6 +96,7 @@ export function Register() {
     return (
         <>
             <h1 className='display-1'>Register</h1>
+            {loading && <p>Loading...</p>}
             {error && <Alert variant="warning">The following error has occured: {error}</Alert>}
             {success && <Alert variant="success">Registration successful. Please Login.</Alert>}
             <Form onSubmit={submit}>
