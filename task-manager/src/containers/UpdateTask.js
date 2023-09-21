@@ -64,7 +64,7 @@ export function UpdateTask() {
         };
 
         fetchData();
-    }, []);
+    }, [taskId, userId]);
 
     const submit = async (e) => {
         e.preventDefault();
