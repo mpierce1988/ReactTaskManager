@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import { getTask, updateTask } from "../functions/apiFunctions";
 import { useParams } from "react-router-dom";
-
+import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export function UpdateTask() {
     // set loading, error and success states
@@ -24,6 +25,9 @@ export function UpdateTask() {
     // get taskId from params
     const { taskId } = useParams();
 
+    // get navigate from useNavigate
+    const navigate = useNavigate();
+
     // Retrieve task from api
     useEffect(() => {
         // validate a userId is present
@@ -34,6 +38,13 @@ export function UpdateTask() {
 
         const fetchData = async () => {
             setLoading(true);
+            setSuccess(false);
+
+            // reset error states
+            setError('');
+            setNameError('');
+            setDescriptionError('');
+
             try {
                 const data = await getTask(userId, taskId);
 
@@ -99,23 +110,33 @@ export function UpdateTask() {
         }
     }
 
+    // return to task screen on cancel
+    const cancel = () => {
+        navigate('/tasks');
+    }
+
     return (
         <>
-            <h1>Update Task</h1>
+            <h1 className='display-1'>Update Task</h1>
             {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {success && <p>Task Updated Successfully!</p>}
-            {!userId && <p>User not logged in</p>}
+            {error && <Alert variant="warning">{error}</Alert>}
+            {success && <Alert variant="success">Task Updated Successfully!</Alert>}
+            {!userId && <Alert variant="info">User not logged in</Alert>}
             {userId && 
-                <form onSubmit={submit}>
-                    <label htmlFor="name">Name</label>
-                    <input id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
-                    {nameError && <p>{nameError}</p>}
-                    <label htmlFor="description">Description</label>
-                    <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}/>
-                    {descriptionError && <p>{descriptionError}</p>}
-                    <button type="submit">Update</button>                    
-                </form>
+                <Form onSubmit={submit}>
+                    <Form.Group className='mb-3'>
+                        <Form.Label htmlFor="name">Name</Form.Label>
+                        <Form.Control id="name" type="text" value={name} onChange={e => setName(e.target.value)} />
+                        {nameError && <Alert variant='danger'>{nameError}</Alert>}
+                    </Form.Group>
+                    <Form.Group className='mb-3'>
+                        <Form.Label htmlFor="description">Description</Form.Label>
+                        <Form.Control id="description" type="text" value={description} onChange={e => setDescription(e.target.value)} />
+                        {descriptionError && <Alert variant='danger'>{descriptionError}</Alert>}
+                    </Form.Group>
+                    <Button variant="primary" type="submit">Update</Button>
+                    <Button variant="danger" type="button" role='button' onClick={cancel}>Cancel</Button>
+                </Form>
             }
         </>
     );
