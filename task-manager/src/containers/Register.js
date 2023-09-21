@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { register } from '../functions/apiFunctions';
+import { Form, Alert, Button } from 'react-bootstrap';
 
 export function Register() {
     const [email, setEmail] = useState('');
@@ -94,25 +95,33 @@ export function Register() {
 
     return (
         <>
-            <h1>Register</h1>
-            {error && <p>The following error has occured: {error}</p>}
-            {success && <p>Registration successful</p>}
-            <form onSubmit={submit}>
-                <label htmlFor="email">Email</label>
-                <input type="email" id="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
-                {emailError && <p>{emailError}</p>}
-                <label htmlFor="name">Name</label>
-                <input type="text" id="name" name="name" value={name} onChange={e => setName(e.target.value)}/>
-                {nameError && <p>{nameError}</p>}
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                {passwordError && <p>{passwordError}</p>}
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/> 
-                {confirmPasswordError && <p>{confirmPasswordError}</p>}
-                <button type="submit" role='button'>Register</button>    
-                <button type="button" role='button' onClick={reset}>Reset</button>          
-            </form>
+            <h1 className='display-1'>Register</h1>
+            {error && <Alert variant="warning">The following error has occured: {error}</Alert>}
+            {success && <Alert variant="success">Registration successful. Please Login.</Alert>}
+            <Form onSubmit={submit}>
+                <Form.Group className='mb-3'>
+                    <Form.Label htmlFor="email">Email</Form.Label>
+                    <Form.Control type="email" id="email" name="email" value={email} onChange={e => setEmail(e.target.value)} />
+                    {emailError && <Alert variant="danger">{emailError}</Alert>}
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                    <Form.Label htmlFor="name">Name</Form.Label>
+                    <Form.Control type="text" id="name" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                    {nameError && <Alert variant="danger">{nameError}</Alert>}
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                    <Form.Label htmlFor="password">Password</Form.Label>
+                    <Form.Control type="password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
+                    {passwordError && <Alert variant='danger'>{passwordError}</Alert>}
+                </Form.Group>
+                <Form.Group className='mb-3'>
+                    <Form.Label htmlFor="confirmPassword">Confirm Password</Form.Label>
+                    <Form.Control type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/> 
+                    {confirmPasswordError && <Alert variant="danger">{confirmPasswordError}</Alert>}
+                </Form.Group>
+                <Button variant="primary" type="submit" role='button'>Register</Button>    
+                <Button variant="secondary" type="button" role='button' onClick={reset}>Reset</Button>          
+            </Form>
         </>
     );
 }
