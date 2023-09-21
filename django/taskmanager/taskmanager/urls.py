@@ -19,6 +19,7 @@ from django.urls import path
 from backendapi import views
 
 urlpatterns = [
+    path('/api', views.hello, name='hello'),
     path('api/user/register', views.register, name='register'),
     path('api/user/login', views.login, name='login'),
     path('api/tasks/<int:user_id>', views.tasks_view, name='tasks_view'),

@@ -4,6 +4,9 @@ from .models import User, Task
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
+def hello(request):
+    return JsonResponse({"status": "Success", "message": "Hello, world!"})
+
 @csrf_exempt
 def register(request):
     try:
