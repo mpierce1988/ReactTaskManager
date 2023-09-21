@@ -15,7 +15,7 @@ export const UserProvider = ({ children }) => {
         if(storageUserId) {
             setUserId(storageUserId);
         }
-    });
+    }, []);
 
     const setAndStoreUserId = (newUserId) => {
         setUserId(newUserId);
