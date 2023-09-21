@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import { createTask } from "../functions/apiFunctions";
 import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export function CreateTask() {
     // set loading, error and success states
@@ -29,6 +30,13 @@ export function CreateTask() {
         setDescriptionError('');
         setError('');
     };
+
+    // get navigate from useNavigate
+    const navigate = useNavigate();
+
+    const redirectToTasks= () => {
+        navigate('/tasks');
+    }
 
     // submit form
     const submit = async (e) => {
@@ -67,7 +75,7 @@ export function CreateTask() {
             // check data for success or error status
             if(data.status === 'Success') {
                 setSuccess(true);
-                reset();
+                redirectToTasks();
             } else {
                 setError('Error creating task');
             }
