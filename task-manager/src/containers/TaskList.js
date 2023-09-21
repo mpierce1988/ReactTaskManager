@@ -22,7 +22,7 @@ export function TaskList() {
                 const data = await getTasks(userId);
 
                 // Check for errors
-                if(data.status != 'Success') {
+                if(data.status !== 'Success') {
                     setError('Unable to retrieve tasks');
                     
                 } else {
@@ -46,7 +46,7 @@ export function TaskList() {
             {!userId && <Alert variant="danger">User not logged in</Alert>}
             {loading && <p>Loading...</p>}
             {error && <Alert variant="warning">{error}</Alert>}
-            {tasks && tasks.length == 0 && <Alert variant="warning">No tasks found</Alert>}
+            {tasks && tasks.length === 0 && <Alert variant="warning">No tasks found</Alert>}
             {userId &&
                 <LinkContainer to="/tasks/create" className="mt-3 mb-3"> 
                     <Button variant='success' role="button">Create Task</Button>
