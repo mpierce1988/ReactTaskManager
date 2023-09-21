@@ -14,6 +14,10 @@ def register(request):
             email = data.get('email')
             password = data.get('password')
 
+            # Validate email is unique
+            if User.objects.filter(email = email).exists():
+                return JsonResponse({"status": "UniqueError", "message": "Email already exists"}, status=400)
+
             # Validate name, email and password were provided
             if not (name and email and password):
                 return JsonResponse({"status": "Error", "message": "Name, email and password are required"}, status=400)
