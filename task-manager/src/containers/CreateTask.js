@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../contexts/UserContext";
 import { createTask } from "../functions/apiFunctions";
+import { Form, Button, Alert } from "react-bootstrap";
 
 export function CreateTask() {
     // set loading, error and success states
@@ -24,6 +25,9 @@ export function CreateTask() {
     const reset = () => {
         setName('');
         setDescription('');
+        setNameError('');
+        setDescriptionError('');
+        setError('');
     };
 
     // submit form
@@ -76,22 +80,26 @@ export function CreateTask() {
 
     return (
         <>
-            <h1>Create Task</h1>
+            <h1 className='display-1'>Create Task</h1>
             {loading && <p>Loading...</p>}
-            {error && <p>Error creating task</p>}
-            {success && <p>Task created successfully!</p>}
-            {!userId && <p>User not logged in</p>}
+            {error && <Alert variant="warning">Error creating task</Alert>}
+            {success && <Alert variant="success">Task created successfully!</Alert>}
+            {!userId && <Alert variant="info">User not logged in</Alert>}
             {userId && 
-                <form onSubmit={submit}>
-                    <label htmlFor="name">Name</label>
-                    <input id="name" type="text" value={name} onChange={e => setName(e.target.value)}/>
-                    {nameError && <p>{nameError}</p>}
-                    <label htmlFor="description">Description</label>
-                    <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}/>
-                    {descriptionError && <p>{descriptionError}</p>}
-                    <button type="submit">Create</button>
-                    <button type="button" role='button' onClick={reset}>Reset</button>
-                </form>
+                <Form onSubmit={submit}>
+                    <Form.Group className='mb-3'>
+                        <Form.Label htmlFor="name">Name</Form.Label>
+                        <Form.Control id="name" type="text" value={name} onChange={e => setName(e.target.value)} />
+                        {nameError && <Alert variant='danger'>{nameError}</Alert>}
+                    </Form.Group>
+                    <Form.Group className='mb-3'>
+                        <Form.Label htmlFor="description">Description</Form.Label>
+                        <Form.Control id="description" type="text" value={description} onChange={e => setDescription(e.target.value)} />
+                        {descriptionError && <Alert variant='danger'>{descriptionError}</Alert>}
+                    </Form.Group>
+                    <Button variant="primary" type="submit">Create</Button>
+                    <Button variant="secondary" type="button" role='button' onClick={reset}>Reset</Button>
+                </Form>
             }
         </>
     );
