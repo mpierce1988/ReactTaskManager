@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { TaskItem } from "../components/TaskItem";
 import { getTasks } from "../functions/apiFunctions";
 import { useUser } from "../contexts/UserContext";
-import { Link } from "react-router-dom";
-import { Alert, Nav, Table, Button } from "react-bootstrap";
+import { Alert, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 export function TaskList() {
