@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from backendapi import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('api/user/register', views.register, name='register'),
+    path('api/user/login', views.login, name='login'),
+    path('api/tasks/<int:user_id>', views.tasks_view, name='tasks_view'),
+    path('api/tasks/<int:user_id>/<int:task_id>', views.task_view, name='task_view')
+
 ]
