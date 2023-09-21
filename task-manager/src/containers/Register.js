@@ -82,6 +82,9 @@ export function Register() {
                 setSuccess(true);
                 setError('');
                 
+            } else if (data.status === 'UniqueError'){
+                setError('Email already in use');
+                setSuccess(false)
             } else {
                 setSuccess(false);
                 setError('An error occurred while trying to register');
