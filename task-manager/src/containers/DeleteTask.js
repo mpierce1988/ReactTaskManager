@@ -65,6 +65,7 @@ export function DeleteTask(){
             // check for success status
             if(data.status === 'Success'){
                 setSuccess(true);
+                cancel();
             } else {
                 setError('Unable to delete task');
             }
