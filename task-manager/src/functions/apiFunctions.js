@@ -1,6 +1,8 @@
+const API_URL = process.env.REACT_APP_API_URL;
+
 export const login = async (email, password) => {
     // make an API request
-    const response = await fetch('http://localhost:8000/api/user/login', {
+    const response = await fetch(API_URL + '/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -15,7 +17,7 @@ export const login = async (email, password) => {
 
 export const register = async (email, name, password ) => {
     // make an API request
-    const response = await fetch('http://localhost:8000/api/user/register', {
+    const response = await fetch(API_URL + '/user/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -30,7 +32,7 @@ export const register = async (email, name, password ) => {
 
 export const getTask = async (userId, taskId) => {
     // Make API request
-    const response = await fetch('http://localhost:8000/api/tasks/' + userId + '/' + taskId, {
+    const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -44,7 +46,7 @@ export const getTask = async (userId, taskId) => {
 
 export const getTasks = async (userId) => {
     // Make API request
-    const response = await fetch('http://localhost:8000/api/tasks/' + userId, {
+    const response = await fetch(API_URL + '/tasks/' + userId, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -58,7 +60,7 @@ export const getTasks = async (userId) => {
 
 export const createTask = async (userId, name, description) => {
     // Make API request
-    const response = await fetch('http://localhost:8000/api/tasks/' + userId, {
+    const response = await fetch(API_URL + '/tasks/' + userId, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -73,7 +75,7 @@ export const createTask = async (userId, name, description) => {
 
 export const updateTask = async (userId, taskId, name, description) => {
     // Make API request
-    const response = await fetch('http://localhost:8000/api/tasks/' + userId + '/' + taskId, {
+    const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -88,7 +90,7 @@ export const updateTask = async (userId, taskId, name, description) => {
 
 export const deleteTask = async (userId, taskId) => {
     // Make API request
-    const response = await fetch('http://localhost:8000/api/tasks/' + userId + '/' + taskId, {
+    const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
