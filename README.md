@@ -3,7 +3,7 @@
 Welcome to Task Manager, a React-based task management application designed to showcase web development skills, focusing on creating dynamic and robust user interfaces.
 
 ## Live Demo
-The application is hosted on Netlify and can be accessed [here](https://dulcet-bublanina-bd3479.netlify.app/tasks).
+The application is hosted on Netlify and can be accessed [here](https://dulcet-bublanina-bd3479.netlify.app/).
 
 ## Features
 
