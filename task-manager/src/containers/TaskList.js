@@ -6,7 +6,7 @@ import { Alert, Table, Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
 export function TaskList() {
-    const {userId} = useUser();
+    const {userId, token} = useUser();
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -19,7 +19,7 @@ export function TaskList() {
                 setLoading(true);
                 setError('');
 
-                const data = await getTasks(userId);
+                const data = await getTasks(userId, token);
 
                 // Check for errors
                 if(data.status !== 'Success') {
@@ -38,7 +38,7 @@ export function TaskList() {
 
         fetchData();
 
-    }, [userId]);
+    }, [userId, token]);
 
     return (
         <>

@@ -5,7 +5,7 @@ import { login } from '../functions/apiFunctions';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 export function Login(){
-    const { setUserId } = useUser();
+    const { setUserId, setToken } = useUser();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');   
 
@@ -62,6 +62,7 @@ export function Login(){
 
             if (data.status === 'Success') {               
                 setUserId(data.user.id);
+                setToken(data.token);
                 setSuccess(true);
                 setError(false);
                 navigate('/');

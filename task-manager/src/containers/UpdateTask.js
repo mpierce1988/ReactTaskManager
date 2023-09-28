@@ -20,7 +20,7 @@ export function UpdateTask() {
     const [ descriptionError, setDescriptionError ] = useState('');
 
     // get userId from user context
-    const { userId } = useUser();
+    const { userId, token } = useUser();
 
     // get taskId from params
     const { taskId } = useParams();
@@ -46,7 +46,7 @@ export function UpdateTask() {
             setDescriptionError('');
 
             try {
-                const data = await getTask(userId, taskId);
+                const data = await getTask(userId, taskId, token);
 
                 // check for success status
                 if(data.status === 'Success') {
@@ -64,7 +64,7 @@ export function UpdateTask() {
         };
 
         fetchData();
-    }, [taskId, userId]);
+    }, [taskId, userId, token]);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -95,7 +95,7 @@ export function UpdateTask() {
 
         // perform updateTask apiFunction inside a try catch
         try {
-            const data = await updateTask(userId, taskId, name, description);
+            const data = await updateTask(userId, taskId, name, description, token);
 
             // check for success status
             if(data.status === 'Success'){

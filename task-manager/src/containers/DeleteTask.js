@@ -17,8 +17,8 @@ export function DeleteTask(){
 
     // get taskId from params
     const { taskId } = useParams();
-    // get userId from user context
-    const { userId } = useUser();
+    // get userId and token from user context
+    const { userId, token } = useUser();
 
     // get navigate from react-router-dom
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ export function DeleteTask(){
             setLoading(true);
 
             try {
-                const data = await getTask(userId, taskId);
+                const data = await getTask(userId, taskId, token);
 
                 // check for success status
                 if(data.status === 'Success') {
@@ -47,7 +47,7 @@ export function DeleteTask(){
         }
 
         fetchData();
-    }, [userId, taskId]);
+    }, [userId, taskId, token]);
 
     // submit form
     const submit = async (e) => {
@@ -60,7 +60,7 @@ export function DeleteTask(){
 
         // perform deleteTask apiFunction inside a try catch
         try {
-            const data = await deleteTask(userId, taskId);
+            const data = await deleteTask(userId, taskId, token);
 
             // check for success status
             if(data.status === 'Success'){

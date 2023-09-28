@@ -10,8 +10,8 @@ export function CreateTask() {
     const [ success, setSuccess ] = useState(false);
     const [ error, setError ] = useState('');
 
-    // get user id from user context
-    const {userId} = useUser();
+    // get user id and token from user context
+    const {userId, token} = useUser();
     
 
     // create state variables for form fields
@@ -70,7 +70,7 @@ export function CreateTask() {
 
         // perform createTask apiFunction inside a try catch
         try {
-            const data = await createTask(userId, name, description);
+            const data = await createTask(userId, name, description, token);
 
             // check data for success or error status
             if(data.status === 'Success') {

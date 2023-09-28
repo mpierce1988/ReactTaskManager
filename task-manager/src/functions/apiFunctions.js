@@ -30,12 +30,13 @@ export const register = async (email, name, password ) => {
     return data;
 }
 
-export const getTask = async (userId, taskId) => {
+export const getTask = async (userId, taskId, token) => {
     // Make API request
     const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         }
     });
 
@@ -44,12 +45,13 @@ export const getTask = async (userId, taskId) => {
     return data;
 }
 
-export const getTasks = async (userId) => {
+export const getTasks = async (userId, token) => {
     // Make API request
     const response = await fetch(API_URL + '/tasks/' + userId, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         }
     });
 
@@ -58,12 +60,13 @@ export const getTasks = async (userId) => {
     return data;
 }
 
-export const createTask = async (userId, name, description) => {
+export const createTask = async (userId, name, description, token) => {
     // Make API request
     const response = await fetch(API_URL + '/tasks/' + userId, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify({ name, description })
     });
@@ -73,12 +76,13 @@ export const createTask = async (userId, name, description) => {
     return data;
 }
 
-export const updateTask = async (userId, taskId, name, description) => {
+export const updateTask = async (userId, taskId, name, description, token) => {
     // Make API request
     const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify({ name, description })
     });
@@ -88,12 +92,13 @@ export const updateTask = async (userId, taskId, name, description) => {
     return data;
 }
 
-export const deleteTask = async (userId, taskId) => {
+export const deleteTask = async (userId, taskId, token) => {
     // Make API request
     const response = await fetch(API_URL + '/tasks/' + userId + '/' + taskId, {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         }
     });
 
