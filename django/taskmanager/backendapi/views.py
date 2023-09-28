@@ -2,6 +2,7 @@ import json
 from django.http import JsonResponse
 from .models import User, Task
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import make_password, check_password
 
 # Create your views here.
 def hello(request):
@@ -25,7 +26,8 @@ def register(request):
             if not (name and email and password):
                 return JsonResponse({"status": "Error", "message": "Name, email and password are required"}, status=400)
             
-            user = User(name = name, email = email, password = password)
+            hashed_password = make_password(password)
+            user = User(name = name, email = email, password = hashed_password)
             user.save()
             return JsonResponse({"status": "Success" })
     except Exception as e:
@@ -47,7 +49,7 @@ def login(request):
             # Validate user exists and password matches
             try:
                 user = User.objects.get(email = email)
-                if user.password != password:
+                if not check_password(password, user.password):
                     return JsonResponse({"status": "Error", "message": "Invalid credentials"}, status=400)
                 else:
                     return JsonResponse({"status": "Success", "user": {"id": user.id, "name": user.name, "email": user.email}}, status=200)
