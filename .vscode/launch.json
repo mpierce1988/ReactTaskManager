@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/django/taskmanager/manage.py",
+            "args": [
+                "runserver",
+                "--noreload",
+                "--nothreading"
+            ],
+            "django": true,
+            "justMyCode": true,
+            "pythonPath": "${workspaceFolder}/django/taskmanager/venv/bin/python",
+        }
+    ]
+}

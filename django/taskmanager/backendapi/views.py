@@ -1,8 +1,13 @@
 import json
 from django.http import JsonResponse
-from .models import User, Task
+from .models import Task
+from .models import CustomUser as User
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password, check_password
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 def hello(request):
@@ -52,13 +57,20 @@ def login(request):
                 if not check_password(password, user.password):
                     return JsonResponse({"status": "Error", "message": "Invalid credentials"}, status=400)
                 else:
-                    return JsonResponse({"status": "Success", "user": {"id": str(user.id), "name": user.name, "email": user.email}}, status=200)
+                    # Generate a token and return it with the response
+                    token, created = Token.objects.get_or_create(user = user)
+                    print(user)
+                    print(type(user))
+                    return JsonResponse({"status": "Success", "user": {"id": str(user.id), "name": user.name, "email": user.email}, "token": token.key}, status=200)
             except User.DoesNotExist:
                 return JsonResponse({"status": "Error", "message": "Invalid credentials"}, status=400)
     except Exception as e:
         return JsonResponse({"status": "Error", "message": str(e)}, status=500)
     
 @csrf_exempt
+@api_view(['GET', 'POST'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def tasks_view(request, user_id):
     if request.method == 'GET':
         return get_tasks(request, user_id)
@@ -68,6 +80,9 @@ def tasks_view(request, user_id):
         return JsonResponse({"status": "Error", "message": "Method not allowed"}, status=405)
     
 @csrf_exempt
+@api_view(['GET', 'PATCH', 'DELETE'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def task_view(request, user_id, task_id):
     if request.method == 'GET':
         return get_task(request, user_id, task_id)
