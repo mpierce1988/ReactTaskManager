@@ -52,7 +52,7 @@ def login(request):
                 if not check_password(password, user.password):
                     return JsonResponse({"status": "Error", "message": "Invalid credentials"}, status=400)
                 else:
-                    return JsonResponse({"status": "Success", "user": {"id": user.id, "name": user.name, "email": user.email}}, status=200)
+                    return JsonResponse({"status": "Success", "user": {"id": str(user.id), "name": user.name, "email": user.email}}, status=200)
             except User.DoesNotExist:
                 return JsonResponse({"status": "Error", "message": "Invalid credentials"}, status=400)
     except Exception as e:
@@ -84,7 +84,7 @@ def get_task(request, user_id, task_id):
     try:
         task = Task.objects.get(user__id = user_id, id = task_id)        
         
-        return JsonResponse({"status": "Success", "task": {"id": task.id, "userId": task.user.id, "name": task.name, "description": task.description}}, status=200)
+        return JsonResponse({"status": "Success", "task": {"id": str(task.id), "userId": str(task.user.id), "name": task.name, "description": task.description}}, status=200)
     except Task.DoesNotExist:
         return JsonResponse({"status": "Error", "message": "Task not found"}, status=404)
     except Exception as e:
@@ -99,7 +99,7 @@ def get_tasks(request, user_id):
         tasks = Task.objects.filter(user__id = user_id)
 
         # use list comprehension to convert list of tasks to a list of dictionaries
-        tasks_list = [{ "id": task.id, "userId": task.user.id, "name": task.name, "description": task.description} for task in tasks]
+        tasks_list = [{ "id": str(task.id), "userId": str(task.user.id), "name": task.name, "description": task.description} for task in tasks]
 
         return JsonResponse({"status": "Success", "tasks": tasks_list}, status=200)
 
@@ -125,7 +125,7 @@ def add_task(request, user_id):
         task = Task(user = user, name = name, description = description)
         task.save()
 
-        return JsonResponse({"status": "Success", "task": {"id": task.id, "userId": task.user.id, "name": task.name, "description": task.description}}, status=201)
+        return JsonResponse({"status": "Success", "task": { "id": str(task.id), "userId": str(task.user.id), "name": task.name, "description": task.description}}, status=201)
     except User.DoesNotExist:
         return JsonResponse({"status": "Error", "message": "User not found"}, status=404)
     except Exception as e:
@@ -152,7 +152,7 @@ def update_task(request, user_id, task_id):
         task.save()
 
         # return success message with updated task information
-        return JsonResponse({"status": "Success", "task": {"id":task.id, "userId":task.user.id, "name":task.name, "description":task.description}}, status=200)
+        return JsonResponse({"status": "Success", "task": {"id": str(task.id), "userId": str(task.user.id), "name":task.name, "description":task.description}}, status=200)
 
     except Task.DoesNotExist:
         return JsonResponse({"status": "Error", "message": "Task not found"}, status=404)    
@@ -166,8 +166,8 @@ def delete_task(request, user_id, task_id):
 
 
         task_details = {
-            "id": task.id,
-            "userId": task.user.id,
+            "id": str(task.id),
+            "userId": str(task.user.id),
             "name": task.name,
             "description": task.description
         }
