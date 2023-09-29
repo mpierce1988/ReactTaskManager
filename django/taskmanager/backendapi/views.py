@@ -32,7 +32,7 @@ def register(request):
                 return JsonResponse({"status": "Error", "message": "Name, email and password are required"}, status=400)
             
             hashed_password = make_password(password)
-            user = User(name = name, email = email, password = hashed_password)
+            user = User(username = email, name = name, email = email, password = hashed_password)
             user.save()
             return JsonResponse({"status": "Success" })
     except Exception as e:
